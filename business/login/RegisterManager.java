@@ -8,7 +8,6 @@ public class RegisterManager
 {
     private String registerFile;
     private static final String defaultRegisterFile = "Register.bin";
-    private static List<User> users;
 
     public RegisterManager(String registerFile)
     {
@@ -113,8 +112,9 @@ public class RegisterManager
         }
     }
 
-    private User getUser(String login, String password)
+    private User getUser(String login, String password) throws Exception
     {
+        List<User> users = load();
         User currentUser = new User(login, password);
         User foundUser = null;
         for (User user : users)
