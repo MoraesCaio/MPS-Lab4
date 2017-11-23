@@ -1,15 +1,12 @@
 package business;
 
 import business.model.User;
-import business.model.tree.GenealogicalTree;
 import business.model.tree.Member;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.management.MemoryManagerMXBean;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by caiomoraes on 22/11/17.
