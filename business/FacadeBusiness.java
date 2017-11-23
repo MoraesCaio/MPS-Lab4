@@ -45,19 +45,19 @@ public class FacadeBusiness
             {
                 e.printStackTrace();
             }
-            if (foundUser != null)
-            {
-                currentUser = foundUser;
-            }
+            if (foundUser == null) return;
+            currentUser = foundUser;
+            initTree();
         }
     }
-
+    
     public void login(String name, String password)
     {
         try
         {
             User userFound = loginInterface.login(name, password);
             if (userFound == null) return;
+            currentUser = userFound;
             initTree();
         }
         catch (Exception e)
