@@ -1,8 +1,8 @@
 package infra;
 
-public class FactorySQL extends UserDAOFactory
+class FactorySQL extends UserDAOFactory
 {
-    protected UserDAO getDAO()
+    UserDAO getDAO()
     {
         return new UserDAODB();
     }

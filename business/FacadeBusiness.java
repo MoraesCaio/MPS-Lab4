@@ -12,17 +12,14 @@ import infra.UserDAOFactory;
 
 import java.util.List;
 
-/**
- * Created by caiomoraes on 22/11/17.
- */
 public class FacadeBusiness
 {
-    public User currentUser;
+    User currentUser;
+    private TreeController treeController;
+    private AddMemberCommand addMemberCommand;
+    private SearchMemberCommand searchMemberCommand;
+    private UpdateMemberCommand updateMemberCommand;
     public UserDAO userDAO;
-    public TreeController treeController;
-    public AddMemberCommand addMemberCommand;
-    public SearchMemberCommand searchMemberCommand;
-    public UpdateMemberCommand updateMemberCommand;
 
     public FacadeBusiness(String typeDAO)
     {
@@ -107,7 +104,7 @@ public class FacadeBusiness
         }
     }
 
-    public void externLogin(String name, String password, LoginInterface.Adapter adapter)
+    public void externalLogin(String name, String password, LoginInterface.Adapter adapter)
     {
         try {
             User userFound = LoginInterface.getAdapter(adapter).login(name, password);

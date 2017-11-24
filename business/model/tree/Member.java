@@ -2,9 +2,6 @@ package business.model.tree;
 
 import java.io.Serializable;
 
-/**
- * Created by caiomoraes on 21/11/17.
- */
 public class Member implements Serializable
 {
     /*PROPERTIES*/

@@ -7,13 +7,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by caiomoraes on 22/11/17.
- */
 public class User implements Serializable
 {
-    String name;
-    String password;
+    private String name;
+    private String password;
     GenealogicalTree genealogicalTree;
 
     public User(String name, String password, GenealogicalTree genealogicalTree)
@@ -50,15 +47,7 @@ public class User implements Serializable
 
     public boolean equals(User user)
     {
-        if (!user.getName().equals(name))
-        {
-            return false;
-        }
-        if (!user.getPassword().equals(password))
-        {
-            return false;
-        }
-        return true;
+        return user.getName().equals(name) && user.getPassword().equals(password);
     }
 
     @Override

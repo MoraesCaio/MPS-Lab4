@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class TwitterAdapter extends LoginInterface
 {
-    TwitterAPI twitterAPI;
+    private TwitterAPI twitterAPI;
 
     TwitterAdapter()
     {
@@ -14,6 +14,6 @@ public class TwitterAdapter extends LoginInterface
 
     public User login(String login, String password)
     {
-        return twitterAPI.login(login, password, new Date());
+        return twitterAPI.loginV3(new Date(), login, password);
     }
 }

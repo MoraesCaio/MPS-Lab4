@@ -3,9 +3,6 @@ package business.model.tree;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by caiomoraes on 22/11/17.
- */
 public class TreeCareTaker implements Serializable
 {
     private GenealogicalTree genealogicalTree;

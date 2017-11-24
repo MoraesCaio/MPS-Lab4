@@ -2,10 +2,12 @@ package business.control.login;
 
 import business.model.User;
 
+import java.util.Date;
+
 
 public class FacebookAdapter extends LoginInterface
 {
-    FacebookAPI facebookAPI;
+    private FacebookAPI facebookAPI;
 
     FacebookAdapter()
     {
@@ -14,6 +16,6 @@ public class FacebookAdapter extends LoginInterface
 
     public User login(String login, String password)
     {
-        return facebookAPI.login(login, password);
+        return facebookAPI.loginV2(login, password, new Date());
     }
 }

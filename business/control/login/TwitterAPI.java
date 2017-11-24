@@ -3,9 +3,9 @@ package business.control.login;
 import business.model.User;
 import java.util.Date;
 
-public class TwitterAPI
+class TwitterAPI
 {
-    User login(String login, String password, Date date)
+    User loginV3(Date date, String login, String password)
     {
         System.out.println("Login by Twitter");
         return new User(login, password);

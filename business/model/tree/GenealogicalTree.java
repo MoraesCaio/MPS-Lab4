@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by caiomoraes on 21/11/17.
- */
 public class GenealogicalTree implements Serializable
 {
     private List<Member> memberList;

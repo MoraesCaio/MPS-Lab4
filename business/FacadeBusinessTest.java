@@ -8,9 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Created by caiomoraes on 22/11/17.
- */
 class FacadeBusinessTest
 {
     private String[] users = new String[7];
