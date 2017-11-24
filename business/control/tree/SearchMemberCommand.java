@@ -1,4 +1,4 @@
-package business.model.tree.command;
+package business.control.tree;
 
 import business.model.tree.GenealogicalTree;
 import business.model.tree.Member;

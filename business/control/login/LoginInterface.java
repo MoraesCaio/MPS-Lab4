@@ -1,4 +1,4 @@
-package business.login;
+package business.control.login;
 
 import business.model.User;
 
@@ -9,7 +9,6 @@ public abstract class LoginInterface
     public enum Adapter{
         Facebook,
         Twitter,
-        Persistent
     }
 
     public static LoginInterface getAdapter(Adapter adapter)
@@ -20,6 +19,6 @@ public abstract class LoginInterface
         if (adapter.equals(Adapter.Twitter)){
             return new TwitterAdapter();
         }
-        return new PersistentAdapter();
+        return null;
     }
 }

@@ -1,4 +1,4 @@
-package business.login;
+package business.control.login;
 
 import business.model.User;
 

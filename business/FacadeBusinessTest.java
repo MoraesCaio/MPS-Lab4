@@ -13,17 +13,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 class FacadeBusinessTest
 {
-    String[] users = new String[4];
-    String[] passwords = new String[3];
-    String[] members = new String[3];
+    private String[] users = new String[7];
+    private String[] passwords = new String[3];
+    private String[] members = new String[3];
+    private FacadeBusiness facadeBusiness = new FacadeBusiness("file");
+
 
     @BeforeEach
     void setUp()
     {
         users[0] = "aaabb";
-        users[1] = "cccddd";
-        users[2] = "eeefffg";
-        users[3] = "demonho";
+        users[1] = "janyelson";
+        users[2] = "victor";
+        users[3] = "lacerda";
+        users[4] = "oliveira";
+        users[5] = "luccas";
+        users[6] = "rafael";
         passwords[0] = "aaa";
         passwords[1] = "bbbb";
         passwords[2] = "ccccc";
@@ -36,7 +41,6 @@ class FacadeBusinessTest
     @Test
     void addUserUserName1()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
         facadeBusiness.addUser(users[0], passwords[1]);
         assertEquals(facadeBusiness.currentUser, null);
     }
@@ -44,7 +48,6 @@ class FacadeBusinessTest
     @Test
     void addUserOK()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
         User user = new User(users[1], passwords[1]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         assertTrue(user.equals(facadeBusiness.currentUser));
@@ -53,7 +56,6 @@ class FacadeBusinessTest
     @Test
     void loginUsername1()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
         facadeBusiness.login(users[0], passwords[1]);
         assertEquals(facadeBusiness.currentUser, null);
     }
@@ -61,8 +63,7 @@ class FacadeBusinessTest
     @Test
     void loginOK()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
-        User user = new User(users[1], passwords[1]);
+        User user = new User(users[2], passwords[1]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         facadeBusiness.login(user.getName(), user.getPassword());
         assertTrue(facadeBusiness.currentUser.equals(user));
@@ -72,8 +73,7 @@ class FacadeBusinessTest
     @Test
     void addMemberInTree()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
-        User user = new User(users[2], passwords[2]);
+        User user = new User(users[3], passwords[2]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         Member member = new Member(Member.male, members[0]);
         facadeBusiness.addMemberInTree("M", member.name);
@@ -92,8 +92,7 @@ class FacadeBusinessTest
     @Test
     void updateMemberInTree()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
-        User user = new User(users[2], passwords[2]);
+        User user = new User(users[4], passwords[2]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         Member member = new Member(Member.male, members[0]);
         facadeBusiness.addMemberInTree("M", member.name);
@@ -114,8 +113,7 @@ class FacadeBusinessTest
     @Test
     void searchMemberInTree()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
-        User user = new User(users[3], passwords[2]);
+        User user = new User(users[5], passwords[2]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         Member member = new Member(Member.male, members[0]);
         facadeBusiness.addMemberInTree("M", member.name);
@@ -126,7 +124,6 @@ class FacadeBusinessTest
     @Test
     void logout()
     {
-        FacadeBusiness facadeBusiness = new FacadeBusiness();
         facadeBusiness.login(users[0], passwords[1]);
         assertEquals(facadeBusiness.currentUser, null);
     }

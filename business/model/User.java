@@ -3,13 +3,14 @@ package business.model;
 import business.model.tree.GenealogicalTree;
 import business.model.tree.Member;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by caiomoraes on 22/11/17.
  */
-public class User
+public class User implements Serializable
 {
     String name;
     String password;

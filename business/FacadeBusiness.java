@@ -1,66 +1,120 @@
 package business;
 
-import business.login.LoginInterface;
-import business.login.PersistentAdapter;
+import business.control.login.LoginInterface;
 import business.model.User;
 import business.model.tree.Member;
-import business.model.tree.TreeController;
-import business.model.tree.command.AddMemberCommand;
-import business.model.tree.command.SearchMemberCommand;
-import business.model.tree.command.UpdateMemberCommand;
+import business.control.tree.TreeController;
+import business.control.tree.AddMemberCommand;
+import business.control.tree.SearchMemberCommand;
+import business.control.tree.UpdateMemberCommand;
+import infra.UserDAO;
+import infra.UserDAOFactory;
+
+import java.util.List;
 
 /**
  * Created by caiomoraes on 22/11/17.
  */
 public class FacadeBusiness
 {
-    LoginInterface loginInterface;
-    User currentUser;
-    TreeController treeController;
-    AddMemberCommand addMemberCommand;
-    SearchMemberCommand searchMemberCommand;
-    UpdateMemberCommand updateMemberCommand;
+    public User currentUser;
+    public UserDAO userDAO;
+    public TreeController treeController;
+    public AddMemberCommand addMemberCommand;
+    public SearchMemberCommand searchMemberCommand;
+    public UpdateMemberCommand updateMemberCommand;
 
-    public FacadeBusiness(LoginInterface.Adapter adapter)
+    public FacadeBusiness(String typeDAO)
     {
-        this.loginInterface = LoginInterface.getAdapter(adapter);
+        this.userDAO = UserDAOFactory.getPersistent(typeDAO);
     }
 
-    public FacadeBusiness()
+    public void addUser(String login, String password)
     {
-        this(LoginInterface.Adapter.Persistent);
-    }
-
-    public void addUser(String name, String password)
-    {
-        if (loginInterface instanceof PersistentAdapter)
+        User newUser = null;
+        if (login.length() >= 6)
         {
-            PersistentAdapter persistentAdapter = (PersistentAdapter) loginInterface;
-            User foundUser = null;
-            try
+            if (password.length() >= 4)
             {
-                foundUser = persistentAdapter.signUp(name, password);
+                User foundUser = null;
+
+                try {
+                    foundUser = userDAO.getUser(login);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (foundUser == null)
+                {
+                    System.out.println(login);
+                    newUser = new User(login, password);
+                    try {
+                        userDAO.saveUser(newUser);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            catch (Exception e)
+            else
             {
-                e.printStackTrace();
+                System.out.println("Senha deve possuir pelo menos 4 caracteres.");
             }
-            if (foundUser == null) return;
-            currentUser = foundUser;
+        }
+        else
+        {
+            System.out.println("Nome deve possuir pelo menos 6 caracteres.");
+        }
+        currentUser = newUser;
+        if(currentUser != null)
+        {
             initTree();
         }
     }
     
-    public void login(String name, String password)
+    public void login(String login, String password)
     {
+        User userFound = null;
+
         try
         {
-            User userFound = loginInterface.login(name, password);
-            if (userFound == null) return;
+            User user = userDAO.getUser(login);
+
+            if (user != null)
+            {
+                System.out.println("Usuário encontrado.");
+                if (user.getPassword().equals(password))
+                {
+                    userFound = user;
+                }
+                else
+                {
+                    System.out.println(password);
+                    System.out.println(user.getPassword());
+                    System.out.println("Senha inválida. Tente novamente.");
+                }
+            } else
+            {
+                System.out.println("Usuário não encontrado.");
+                return;
+            }
+
             currentUser = userFound;
             initTree();
         }
         catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void externLogin(String name, String password, LoginInterface.Adapter adapter)
+    {
+        try {
+            User userFound = LoginInterface.getAdapter(adapter).login(name, password);
+            if (userFound == null) return;
+            currentUser = userFound;
+            initTree();
+        }catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -71,7 +125,7 @@ public class FacadeBusiness
         currentUser = null;
     }
 
-    public void initTree()
+    private void initTree()
     {
         treeController = new TreeController();
 
@@ -86,9 +140,15 @@ public class FacadeBusiness
         {
             return;
         }
+
         addMemberCommand.memberInfo.gender = (gender == "M");
         addMemberCommand.memberInfo.name = name;
-        treeController.setTreeCommand(addMemberCommand).run();
+        Member member = treeController.setTreeCommand(addMemberCommand).run();
+        try {
+            if(member != null) userDAO.addMember(currentUser, member);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateMemberInTree(String gender, String name, String newGender, String newName)
@@ -101,7 +161,12 @@ public class FacadeBusiness
         updateMemberCommand.memberInfo.name = name;
         updateMemberCommand.memberNewInfo.gender = (gender == "M");
         updateMemberCommand.memberNewInfo.name = newName;
-        treeController.setTreeCommand(updateMemberCommand).run();
+        Member member = treeController.setTreeCommand(updateMemberCommand).run();
+        try {
+            if(member != null) userDAO.updateMember(currentUser, gender, name, newGender, newName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Member searchMemberInTree(String gender, String name)
@@ -113,5 +178,10 @@ public class FacadeBusiness
         searchMemberCommand.memberInfo.gender = (gender == "M");
         searchMemberCommand.memberInfo.name = name;
         return treeController.setTreeCommand(searchMemberCommand).run();
+    }
+
+    public void report()
+    {
+
     }
 }
