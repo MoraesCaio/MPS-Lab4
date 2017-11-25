@@ -1,5 +1,8 @@
 package business;
 
+import business.control.report.PDFReport;
+import business.control.report.ReportTemplate;
+import business.control.report.XMLReport;
 import business.model.User;
 import business.model.tree.Member;
 
@@ -63,6 +66,7 @@ class FacadeBusinessTest
         User user = new User(users[2], passwords[1]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
         facadeBusiness.login(user.getName(), user.getPassword());
+        facadeBusiness.report(0);
         assertTrue(facadeBusiness.currentUser.equals(user));
     }
 

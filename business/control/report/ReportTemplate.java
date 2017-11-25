@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by caiomoraes on 24/11/17.
  */
-public abstract class ReportTemplate
+public abstract class ReportTemplate implements ReportStrategy
 {
     public String reportFile = "report.txt";
 

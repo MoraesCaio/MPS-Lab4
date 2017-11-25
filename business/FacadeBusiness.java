@@ -3,6 +3,7 @@ package business;
 import business.control.login.LoginInterface;
 import business.control.report.PDFReport;
 import business.control.report.ReportTemplate;
+import business.control.report.ReportWriter;
 import business.control.report.XMLReport;
 import business.model.User;
 import business.model.tree.Member;
@@ -22,6 +23,7 @@ public class FacadeBusiness
     private AddMemberCommand addMemberCommand;
     private SearchMemberCommand searchMemberCommand;
     private UpdateMemberCommand updateMemberCommand;
+    private ReportWriter reportWriter;
     public UserDAO userDAO;
 
     public FacadeBusiness(String typeDAO)
@@ -180,20 +182,20 @@ public class FacadeBusiness
         return treeController.setTreeCommand(searchMemberCommand).run();
     }
 
-    public void report(User currentUser, int model)
+    public void report(int model)
     {
-        ReportTemplate reportTemplate;
+        ReportWriter reportWriter;
 
         //strategy
         if (model == 0)
         {
-            reportTemplate = new XMLReport();
+            reportWriter = new ReportWriter(new XMLReport());
         }
         else
         {
-            reportTemplate = new PDFReport();
+            reportWriter = new ReportWriter(new PDFReport());
         }
 
-        reportTemplate.report(currentUser);
+        reportWriter.writeReport(currentUser);
     }
 }
