@@ -1,6 +1,9 @@
 package business;
 
 import business.control.login.LoginInterface;
+import business.control.report.PDFReport;
+import business.control.report.ReportTemplate;
+import business.control.report.XMLReport;
 import business.model.User;
 import business.model.tree.Member;
 import business.control.tree.TreeController;
@@ -177,8 +180,20 @@ public class FacadeBusiness
         return treeController.setTreeCommand(searchMemberCommand).run();
     }
 
-    public void report()
+    public void report(User currentUser, int model)
     {
+        ReportTemplate reportTemplate;
 
+        //strategy
+        if (model == 0)
+        {
+            reportTemplate = new XMLReport();
+        }
+        else
+        {
+            reportTemplate = new PDFReport();
+        }
+
+        reportTemplate.report(currentUser);
     }
 }
