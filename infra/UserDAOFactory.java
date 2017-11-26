@@ -2,15 +2,19 @@ package infra;
 
 public abstract class UserDAOFactory
 {
-    public static UserDAO getPersistent(String type)
+    public enum Type
+    {
+        File,
+        SQL
+    }
+
+    public static UserDAO getPersistent(Type type)
     {
         switch(type)
         {
-            case "sql":
-                return new FactorySQL().getDAO();
-            case "file":
+            case File:
                 return new FactoryFile().getDAO();
-            default:
+            case SQL: default:
                 return new FactorySQL().getDAO();
         }
     }

@@ -25,7 +25,7 @@ public class FacadeBusiness
     private UpdateMemberCommand updateMemberCommand;
     public UserDAO userDAO;
 
-    public FacadeBusiness(String typeDAO)
+    public FacadeBusiness(UserDAOFactory.Type typeDAO)
     {
         this.userDAO = UserDAOFactory.getPersistent(typeDAO);
     }

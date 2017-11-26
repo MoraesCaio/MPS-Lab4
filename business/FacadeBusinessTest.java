@@ -6,6 +6,7 @@ import business.control.report.XMLReport;
 import business.model.User;
 import business.model.tree.Member;
 
+import infra.UserDAOFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +17,7 @@ class FacadeBusinessTest
     private String[] users = new String[7];
     private String[] passwords = new String[3];
     private String[] members = new String[3];
-    private FacadeBusiness facadeBusiness = new FacadeBusiness("file");
+    private FacadeBusiness facadeBusiness = new FacadeBusiness(UserDAOFactory.Type.File);
 
 
     @BeforeEach
