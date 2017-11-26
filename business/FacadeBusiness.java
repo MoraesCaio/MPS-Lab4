@@ -23,7 +23,6 @@ public class FacadeBusiness
     private AddMemberCommand addMemberCommand;
     private SearchMemberCommand searchMemberCommand;
     private UpdateMemberCommand updateMemberCommand;
-    private ReportWriter reportWriter;
     public UserDAO userDAO;
 
     public FacadeBusiness(String typeDAO)
@@ -182,19 +181,11 @@ public class FacadeBusiness
         return treeController.setTreeCommand(searchMemberCommand).run();
     }
 
-    public void report(int model)
+    public void report(ReportTemplate reportTemplate)
     {
         ReportWriter reportWriter;
 
-        //strategy
-        if (model == 0)
-        {
-            reportWriter = new ReportWriter(new XMLReport());
-        }
-        else
-        {
-            reportWriter = new ReportWriter(new PDFReport());
-        }
+        reportWriter = new ReportWriter(reportTemplate);
 
         reportWriter.writeReport(currentUser);
     }
