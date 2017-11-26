@@ -1,6 +1,7 @@
 package business;
 
 import business.control.login.LoginInterface;
+import business.control.notification.VersionLogger;
 import business.control.report.PDFReport;
 import business.control.report.ReportTemplate;
 import business.control.report.ReportWriter;
@@ -18,16 +19,18 @@ import java.util.List;
 
 public class FacadeBusiness
 {
-    User currentUser;
+    private User currentUser;
     private TreeController treeController;
     private AddMemberCommand addMemberCommand;
     private SearchMemberCommand searchMemberCommand;
     private UpdateMemberCommand updateMemberCommand;
+    private VersionLogger versionLogger;
     public UserDAO userDAO;
 
     public FacadeBusiness(UserDAOFactory.Type typeDAO)
     {
         this.userDAO = UserDAOFactory.getPersistent(typeDAO);
+        this.versionLogger = VersionLogger.getInstance();
     }
 
     public void addUser(String login, String password)
@@ -49,6 +52,7 @@ public class FacadeBusiness
                 {
                     System.out.println(login);
                     newUser = new User(login, password);
+                    newUser.addSubject(versionLogger);
                     try {
                         userDAO.saveUser(newUser);
                     } catch (Exception e) {
@@ -188,5 +192,15 @@ public class FacadeBusiness
         reportWriter = new ReportWriter(reportTemplate);
 
         reportWriter.writeReport(currentUser);
+    }
+
+    public User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    public VersionLogger getVersionLogger()
+    {
+        return versionLogger;
     }
 }

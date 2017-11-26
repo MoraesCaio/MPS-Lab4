@@ -7,8 +7,14 @@ import business.model.User;
 import business.model.tree.Member;
 
 import infra.UserDAOFactory;
+import infra.UserDAOFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,6 +42,19 @@ class FacadeBusinessTest
         members[0] = "Joao";
         members[1] = "Maria";
         members[2] = "Jose";
+
+        if (facadeBusiness.userDAO instanceof UserDAOFile)
+        {
+            UserDAOFile userDAOFile = (UserDAOFile) facadeBusiness.userDAO;
+            try
+            {
+                Files.deleteIfExists(Paths.get(userDAOFile.getRegisterFile()));
+            }
+            catch (IOException e)
+            {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
 
@@ -43,7 +62,7 @@ class FacadeBusinessTest
     void addUserUserName1()
     {
         facadeBusiness.addUser(users[0], passwords[1]);
-        assertEquals(facadeBusiness.currentUser, null);
+        assertEquals(facadeBusiness.getCurrentUser(), null);
     }
 
     @Test
@@ -51,14 +70,16 @@ class FacadeBusinessTest
     {
         User user = new User(users[1], passwords[1]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
-        assertTrue(user.equals(facadeBusiness.currentUser));
+        assertTrue(user.equals(facadeBusiness.getCurrentUser()));
     }
 
     @Test
     void loginUsername1()
     {
+        facadeBusiness.addUser(users[0], passwords[1]);
+        facadeBusiness.logout();
         facadeBusiness.login(users[0], passwords[1]);
-        assertEquals(facadeBusiness.currentUser, null);
+        assertEquals(facadeBusiness.getCurrentUser(), null);
     }
 
     @Test
@@ -66,9 +87,11 @@ class FacadeBusinessTest
     {
         User user = new User(users[2], passwords[1]);
         facadeBusiness.addUser(user.getName(), user.getPassword());
+        facadeBusiness.logout();
         facadeBusiness.login(user.getName(), user.getPassword());
         facadeBusiness.report(new PDFReport());
-        assertTrue(facadeBusiness.currentUser.equals(user));
+        facadeBusiness.getVersionLogger().setVersion("1.2.3");
+        assertTrue(facadeBusiness.getCurrentUser().equals(user));
     }
 
 
@@ -80,7 +103,7 @@ class FacadeBusinessTest
         Member member = new Member(Member.male, members[0]);
         facadeBusiness.addMemberInTree("M", member.name);
         boolean found = false;
-        for (Member member1 : facadeBusiness.currentUser.getGenealogicalTree().getMemberList())
+        for (Member member1 : facadeBusiness.getCurrentUser().getGenealogicalTree().getMemberList())
         {
             if (member1.equals(member))
             {
@@ -101,7 +124,7 @@ class FacadeBusinessTest
         Member member1 = new Member(Member.male, "Mario");
         facadeBusiness.updateMemberInTree("M", member.name, "M", member1.name);
         boolean found = false;
-        for (Member m : facadeBusiness.currentUser.getGenealogicalTree().getMemberList())
+        for (Member m : facadeBusiness.getCurrentUser().getGenealogicalTree().getMemberList())
         {
             if (m.equals(member1))
             {
@@ -126,7 +149,9 @@ class FacadeBusinessTest
     @Test
     void logout()
     {
+        facadeBusiness.addUser(users[0], passwords[1]);
+        facadeBusiness.logout();
         facadeBusiness.login(users[0], passwords[1]);
-        assertEquals(facadeBusiness.currentUser, null);
+        assertEquals(facadeBusiness.getCurrentUser(), null);
     }
 }

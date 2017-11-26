@@ -24,6 +24,11 @@ public class UserDAOFile implements UserDAO
         this(defaultRegisterFile);
     }
 
+    public String getRegisterFile()
+    {
+        return registerFile;
+    }
+
     public void saveUser(User user) throws Exception
     {
         ArrayList<User> users = loadUsers();
