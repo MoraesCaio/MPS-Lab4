@@ -2,10 +2,11 @@ package infra;
 
 import business.model.User;
 import business.model.tree.Member;
-
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserDAOFile implements UserDAO
 {
@@ -93,6 +94,11 @@ public class UserDAOFile implements UserDAO
         ArrayList<User> users = new ArrayList<User>();
         try
         {
+            Path registerFilePath = Paths.get(registerFile);
+            if (!Files.exists(registerFilePath))
+            {
+                Files.createFile(registerFilePath);
+            }
             FileInputStream fis = new FileInputStream(registerFile);
             ObjectInputStream in = new ObjectInputStream(fis);
 
