@@ -52,7 +52,7 @@ public class FacadeBusiness
                 {
                     System.out.println(login);
                     newUser = new User(login, password);
-                    newUser.addSubject(versionLogger);
+                    newUser.addSubject(versionLogger); //notification about version update
                     try {
                         userDAO.saveUser(newUser);
                     } catch (Exception e) {
